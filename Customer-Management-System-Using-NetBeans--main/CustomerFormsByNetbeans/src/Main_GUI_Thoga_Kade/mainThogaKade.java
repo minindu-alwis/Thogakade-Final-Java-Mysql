@@ -117,6 +117,12 @@ public class mainThogaKade extends javax.swing.JFrame {
 
         jLabel6.setText("Code :");
 
+        itemComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                itemComboBoxItemStateChanged(evt);
+            }
+        });
+
         jLabel7.setText("Description :");
 
         jLabel8.setText("Unit Price");
@@ -331,6 +337,22 @@ public class mainThogaKade extends javax.swing.JFrame {
             System.out.println("SQL Exception " + ex.getMessage());
         }
     }//GEN-LAST:event_customerComboBoxItemStateChanged
+
+    private void itemComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_itemComboBoxItemStateChanged
+             String selectItemCode = itemComboBox.getSelectedItem().toString();
+        try {
+            ArrayList<Item> itemDetails = thogakadeController.getItemDetails(selectItemCode);
+            for (Item itemDetail : itemDetails) {
+                itemDescriptionTextField.setText(itemDetail.getDescription());
+                itemUnitPriceTextField.setText(String.valueOf(itemDetail.getUnitPrice()));
+                qtyOnHandTextField.setText(String.valueOf(itemDetail.getQtyOnHand()));
+            }
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Class Not Found Exception " + ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception " + ex.getMessage());
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_itemComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

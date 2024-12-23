@@ -135,4 +135,27 @@ public static ArrayList<Customer> getCustomerIds() throws ClassNotFoundException
 
     return itemCodeList;
 }
+
+    public static ArrayList<Item> getItemDetails(String selectItemCode) throws ClassNotFoundException, SQLException {
+    ArrayList<Item> itemList = new ArrayList<>();
+    String query = "SELECT description, unitPrice, qtyOnHand FROM item WHERE code = ?";
+
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement pstmt = connection.prepareStatement(query)) {
+
+        pstmt.setString(1, selectItemCode); // Set the parameter value
+        try (ResultSet rst = pstmt.executeQuery()) {
+            while (rst.next()) {
+                // Create a new Item object with retrieved details and add to the list
+                itemList.add(new Item(selectItemCode, rst.getString("description"), rst.getDouble("unitPrice"), rst.getInt("qtyOnHand")));
+            }
+        }
+    } catch (SQLException e) {
+        System.out.println("Error retrieving item details: " + e.getMessage());
+        throw e; // Rethrow the exception for further handling
+    }
+    return itemList;
+}
+
+    
 }
